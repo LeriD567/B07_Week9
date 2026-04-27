@@ -23,8 +23,12 @@ jobs:
           cache: maven
 
       # Chạy Maven để test và sinh ra file báo cáo Checkstyle (checkstyle-result.xml)
-      - name: Build and Checkstyle with Maven
-        run: mvn clean verify checkstyle:checkstyle
+      - name: Run Maven Tests
+        run: mvn clean test
+
+      - name: Generate Checkstyle Report
+        if: always()
+        run: mvn checkstyle:checkstyle
 
       # Tích hợp Bot review code trực tiếp trên dòng code lỗi
       - name: Inline Code Review (Checkstyle)
