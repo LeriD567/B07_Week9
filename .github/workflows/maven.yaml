@@ -1,0 +1,36 @@
+name: Java CI with Maven Code Review
+
+on:
+  pull_request:
+    branches: [ "main" ]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      pull-requests: write # Cấp quyền ghi để Bot có thể bình luận vào PR
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up JDK 25
+        uses: actions/setup-java@v4
+        with:
+          java-version: '25'
+          distribution: 'temurin'
+          cache: maven
+
+      # Chạy Maven để test và sinh ra file báo cáo Checkstyle (checkstyle-result.xml)
+      - name: Build and Checkstyle with Maven
+        run: mvn clean verify checkstyle:checkstyle
+
+      # Tích hợp Bot review code trực tiếp trên dòng code lỗi
+      - name: Inline Code Review (Checkstyle)
+        uses: dbelyaev/action-checkstyle@master
+        if: always() # Luôn chạy bước này kể cả khi lệnh mvn ở trên bị lỗi đỏ
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          reporter: github-pr-review
+          checkstyle_issues_path: '**/checkstyle-result.xml'
