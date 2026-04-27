@@ -3,9 +3,9 @@ public class Main {
     int x = 10;
     int y = 20;
 
-    if (x > y) {
+    if (x > y){
       System.out.println("x lớn hơn y");
-    } else{
+    }else{
       System.out.println("y lớn hơn hoặc bằng x");
     }
   }
