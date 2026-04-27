@@ -7,6 +7,7 @@ public class Main {
     int y = 20;
 
 // Lỗi 4: Viết dính liền if và ngoặc nhọn
+    //Test lỗi
     if(X>y){System.out.println("X lớn hơn y");}
     else{
       System.out.println("y lớn hơn hoặc bằng X");
